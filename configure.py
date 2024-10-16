@@ -13,6 +13,7 @@ id=eduroam
 uuid=%s
 type=wifi
 interface-name=wlan0
+autoconnect=true
 
 [wifi]
 mode=infrastructure
@@ -43,7 +44,7 @@ network_setup = [
     "rfkill unblock wifi", # Enable wifi
     # "sed -i 's/^managed=.*$/managed=true/' /etc/NetworkManager/NetworkManager.conf", # Enable full authority over networking
     #"systemctl disable --now dhcpcd", # Disable old networking
-    "systemctl enable --now NetworkManager", # Enable NetworkManager
+    # "systemctl enable --now NetworkManager", # Enable NetworkManager
     "nmcli radio wifi on",
 ]
 
@@ -63,11 +64,11 @@ if __name__ == "__main__":
 
     write_nm_conn_conf(email, password)
 
-    country = input("What's your country code? (Search ISO 3166 alpha-2 if unsure) ") # Used to configure wifi channels + tx power
+    # country = input("What's your country code? (Search ISO 3166 alpha-2 if unsure) ") # Used to configure wifi channels + tx power
 
-    cc_sed_cmd =  f"sed -i 's/^REGDOMAIN=.*$/REGDOMAIN={country}/' /etc/default/crda" # Set wifi country code
-    # Yes, this is a command injection vuln... WONTFIX.
-    os.system(cc_sed_cmd)
+    # cc_sed_cmd =  f"sed -i 's/^REGDOMAIN=.*$/REGDOMAIN={country}/' /etc/default/crda" # Set wifi country code
+    # # Yes, this is a command injection vuln... WONTFIX.
+    # os.system(cc_sed_cmd)
 
     for cmd in network_setup:
         os.system(cmd)
